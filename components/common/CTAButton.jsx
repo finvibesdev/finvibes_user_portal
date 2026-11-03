@@ -61,7 +61,7 @@ export default function CTAButton({
       }}
       {...props}
     >
-      {children || label}
+      {children ? children : label}
     </Button>
   );
 }

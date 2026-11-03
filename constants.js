@@ -1,4 +1,16 @@
-import { Instagram, Facebook, LinkedIn } from "@mui/icons-material";
+import {
+  Instagram,
+  Facebook,
+  LinkedIn,
+  HomeOutlined,
+  CurrencyRupee,
+  BusinessCenterOutlined,
+  DirectionsCarOutlined,
+  ArticleOutlined,
+  TuneOutlined,
+  TrendingUpOutlined,
+  ShieldOutlined,
+} from "@mui/icons-material";
 
 export const COMPANY_NAME = "Finvibes Financial Services Private Limited";
 
@@ -179,26 +191,143 @@ export const SMART_DESK_FOOTER = {
   ctaHref: "/contact",
 };
 
-export const DEFAULT_EMI_VALUES = {
-  amount: 3500000,
-  rate: 8.75,
-  years: 15,
-  months: 0,
+export const LOAN_ELIGIBILITY_TYPES = [
+  {
+    id: "home",
+    label: "Home Loan",
+    defaultRate: 8.5,
+    defaultTenure: 20,
+    tenureOptions: [5, 10, 15, 20, 25, 30],
+    foirPct: 60,
+    icon: <HomeOutlined sx={{ fontSize: 24, color: "#e06d53" }} />,
+    iconBg: "#fef3ee",
+  },
+  {
+    id: "personal",
+    label: "Personal",
+    defaultRate: 11,
+    defaultTenure: 5,
+    tenureOptions: [1, 2, 3, 4, 5, 6, 7],
+    foirPct: 60,
+    icon: <CurrencyRupee sx={{ fontSize: 22, color: "#10b981" }} />,
+    iconBg: "#ecfdf5",
+  },
+  {
+    id: "business",
+    label: "Business",
+    defaultRate: 12.0,
+    defaultTenure: 7,
+    tenureOptions: [1, 2, 3, 4, 5, 6, 7],
+    foirPct: 60,
+    icon: <BusinessCenterOutlined sx={{ fontSize: 22, color: "#8b5cf6" }} />,
+    iconBg: "#f5f3ff",
+  },
+  {
+    id: "car",
+    label: "Car Loan",
+    defaultRate: 9.0,
+    defaultTenure: 7,
+    tenureOptions: [1, 2, 3, 4, 5, 6, 7],
+    foirPct: 60,
+    icon: <DirectionsCarOutlined sx={{ fontSize: 22, color: "#ef4444" }} />,
+    iconBg: "#fef2f2",
+  },
+];
+
+export const DEFAULT_ELIGIBILITY_VALUES = {
+  income: 100000,
+  existingEmi: 10000,
 };
 
-export const EMI_RATE_PRESETS = [
-  { label: "8.50% (Home)", value: 8.5 },
-  { label: "10.50% (Personal)", value: 10.5 },
-  { label: "12.00% (Business)", value: 12.0 },
+export const ELIGIBILITY_PAGE_HEADER = {
+  title: "Check Your Borrowing Power",
+  subtitle:
+    "Lenders calculate eligibility using your Fixed Obligation to Income Ratio (FOIR). Input your figures below.",
+};
+
+export const LOAN_TRANSFER_HEADER = {
+  title: "Calculate Net Switch Benefits",
+  subtitle:
+    "Compare your current loan terms against our partner bank transfer offers factoring in one-time switching expenses.",
+};
+
+export const DEFAULT_LOAN_TRANSFER_VALUES = {
+  outstandingLoan: 5000000,
+  currentRate: 8.75,
+  yearsLeft: 15,
+  newRate: 7.1,
+  processingCharges: 0,
+  otherCharges: 0,
+};
+
+export const CREDIT_PAGE_HEADER = {
+  title: "Credit Score Spectrum & Factors",
+  subtitle:
+    "See where you stand and what moves the needle according to RBI-licensed credit bureaus.",
+};
+
+export const CREDIT_HERO_DATA = {
+  badge: "FREE CREDIT ASSESSMENT",
+  title: "Your Future Starts With Smart Credit",
+  subtitle:
+    "Check your credit score instantly and unlock financial opportunities.",
+  trustPills: ["100% Secure", "Instant Results", "Better Offers"],
+  score: 782,
+  status: "Good / Prime Score",
+  updatedTag: "Live Updated",
+  factors: [
+    "Payment History",
+    "Credit Utilization",
+    "Credit Mix",
+    "Account Age",
+  ],
+};
+
+export const CREDIT_INFO_CARDS = [
+  {
+    id: "how-cibil-works",
+    title: "How CIBIL Works",
+    subtitle: "Learn about payments, credit use, and loans.",
+    icon: <ArticleOutlined sx={{ fontSize: 22, color: "#6366f1" }} />,
+    iconBg: "#eef2ff",
+  },
+  {
+    id: "factors-that-matter",
+    title: "Factors That Matter",
+    subtitle: "Payments, credit use, and loans impact your score.",
+    icon: <TuneOutlined sx={{ fontSize: 22, color: "#0ea5e9" }} />,
+    iconBg: "#f0f9ff",
+  },
+  {
+    id: "improve-your-score",
+    title: "Improve Your Score",
+    subtitle: "Pay on time and keep balances low consistently.",
+    icon: <TrendingUpOutlined sx={{ fontSize: 22, color: "#10b981" }} />,
+    iconBg: "#ecfdf5",
+  },
+  {
+    id: "privacy-first",
+    title: "Your Privacy Comes First",
+    subtitle:
+      "Our information is securely encrypted and protected at every step.",
+    icon: <ShieldOutlined sx={{ fontSize: 22, color: "#f59e0b" }} />,
+    iconBg: "#fffbeb",
+  },
 ];
 
-export const EMI_TENURE_PRESETS = [
-  { label: "5 Yrs", value: 5 },
-  { label: "10 Yrs", value: 10 },
-  { label: "15 Yrs", value: 15 },
-  { label: "20 Yrs", value: 20 },
-  { label: "30 Yrs", value: 30 },
-];
+export const CREDIT_FORM_CONTENT = {
+  partnerBadge: "OFFICIAL BUREAU PARTNER",
+  title: "Check Your Free Credit Score",
+  subtitle: "Instantly Access Detailed Credit Report",
+  caption: "View your credit report instantly — with no impact on your score.",
+  trustHighlights: ["No Impact on Credit Score", "Free Monthly Updates"],
+  securityNotice:
+    "Your Personal Information is 100% secured with us. We do not share your data with any third party.",
+  consentText:
+    "By proceeding, I agree to provide personal details and authorize Finvibes to obtain my Credit Score/Profile from Cibil / Equifax / Experian / CRIF Highmark (bureau). I also agree to following Credit Score Terms of Use.",
+  buttonLabel: "Get Free Credit Report",
+  submitBtn: "Get Free Credit Report",
+};
 
 export const colors = {
   // Brand Blues
@@ -282,4 +411,3 @@ export const typography = {
     extraBold: 800,
   },
 };
-

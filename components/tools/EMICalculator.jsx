@@ -1,198 +1,78 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-  TextField,
-  InputAdornment,
-} from "@mui/material";
+import { useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import {
   CreditCard,
   Percent,
   CalendarToday,
   RestartAlt,
   Calculate,
-  East,
 } from "@mui/icons-material";
-import { DEFAULT_EMI_VALUES, colors, typography } from "@/constants";
+import { colors, typography } from "@/constants";
 import CTAButton from "@/components/common/CTAButton";
+import CalculatorInputCard from "./CalculatorInputCard";
+import CalculatorTextField from "./CalculatorTextField";
+import { emiCalculatorSchema } from "@/validations/emiSchema";
 
 // Format currency in Indian numbering system
 const formatINR = (val) => {
-  if (isNaN(val) || val === null || val === undefined || val === "") return "0";
-  return new Intl.NumberFormat("en-IN").format(Math.round(val));
+  const num = Number(val);
+  if (isNaN(num)) return "0";
+  return new Intl.NumberFormat("en-IN").format(Math.round(num));
 };
 
-// Common Input Card Component
-function CalculatorInputCard({ icon, title, subtitle, children }) {
-  return (
-    <Box
-      sx={{
-        backgroundColor: colors.surface.white,
-        borderRadius: "16px",
-        p: { xs: 2.5, sm: 3 },
-        border: "1px solid #e2e8f0",
-        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.03)",
-      }}
-    >
-      {/* Header */}
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 2 }}>
-        {icon && (
-          <Box
-            sx={{
-              width: 36,
-              height: 36,
-              borderRadius: "8px",
-              backgroundColor: "rgba(11, 99, 229, 0.08)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: colors.brand.primary,
-            }}
-          >
-            {icon}
-          </Box>
-        )}
-        <Box>
-          <Typography
-            sx={{
-              fontFamily: typography.fontFamily,
-              fontSize: typography.fontSizes.base,
-              fontWeight: typography.fontWeights.bold,
-              color: colors.text.primary,
-              lineHeight: 1.2,
-            }}
-          >
-            {title}
-          </Typography>
-          {subtitle && (
-            <Typography
-              sx={{
-                fontFamily: typography.fontFamily,
-                fontSize: typography.fontSizes.sm,
-                color: colors.text.secondary,
-                mt: 0.3,
-              }}
-            >
-              {subtitle}
-            </Typography>
-          )}
-        </Box>
-      </Box>
-
-      {/* Card Body */}
-      {children}
-    </Box>
-  );
-}
-
-// Common Styled Text Field Component
-function CalculatorTextField({
-  placeholder,
-  value,
-  onChange,
-  startAdornment,
-  endAdornment,
-  fullWidth = true,
-  sx = {},
-  ...props
-}) {
-  return (
-    <TextField
-      fullWidth={fullWidth}
-      placeholder={placeholder}
-      value={value ?? ""}
-      onChange={onChange}
-      slotProps={{
-        input: {
-          startAdornment: startAdornment ? (
-            <InputAdornment position="start">
-              {typeof startAdornment === "string" ? (
-                <Typography
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: "17px",
-                    color: colors.text.primary,
-                  }}
-                >
-                  {startAdornment}
-                </Typography>
-              ) : (
-                startAdornment
-              )}
-            </InputAdornment>
-          ) : undefined,
-          endAdornment: endAdornment ? (
-            <InputAdornment position="end">
-              {typeof endAdornment === "string" ? (
-                <Typography
-                  sx={{
-                    fontSize: endAdornment === "%" ? "16px" : "11px",
-                    fontWeight: 700,
-                    color: colors.text.secondary,
-                    letterSpacing: endAdornment === "%" ? "normal" : "0.5px",
-                  }}
-                >
-                  {endAdornment}
-                </Typography>
-              ) : (
-                endAdornment
-              )}
-            </InputAdornment>
-          ) : undefined,
-        },
-      }}
-      sx={{
-        mb: 0,
-        "& .MuiOutlinedInput-root": {
-          borderRadius: "10px",
-          fontSize: "16px",
-          fontWeight: 700,
-          backgroundColor: "#f8fafc",
-          "& fieldset": { borderColor: "#e2e8f0" },
-          "&:hover fieldset": { borderColor: colors.brand.primary },
-          "&.Mui-focused fieldset": {
-            borderColor: colors.brand.primary,
-          },
-          "& input::placeholder": {
-            color: "#94a3b8",
-            opacity: 1,
-            fontWeight: 500,
-          },
-        },
-        ...sx,
-      }}
-      {...props}
-    />
-  );
-}
-
 export default function EMICalculator() {
-  const [amount, setAmount] = useState(DEFAULT_EMI_VALUES.amount);
-  const [rate, setRate] = useState(DEFAULT_EMI_VALUES.rate);
-  const [years, setYears] = useState(DEFAULT_EMI_VALUES.years);
-  const [months, setMonths] = useState(
-    DEFAULT_EMI_VALUES.months ? DEFAULT_EMI_VALUES.months : "",
-  );
+  const {
+    watch,
+    setValue,
+    reset,
+    trigger,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(emiCalculatorSchema),
+    mode: "onChange",
+    defaultValues: {
+      amount: "",
+      rate: "",
+      years: "",
+      months: "",
+    },
+  });
+
+  const amount = watch("amount");
+  const rate = watch("rate");
+  const years = watch("years");
+  const months = watch("months");
 
   // EMI Calculation Formula
   const calculation = useMemo(() => {
-    const P = Math.max(0, Number(amount) || 0);
-    const R = Math.max(0, Number(rate) || 0) / 12 / 100;
-    const N = Math.max(1, (Number(years) || 0) * 12 + (Number(months) || 0));
+    const numAmount = Number(amount);
+    const P = Math.max(0, isNaN(numAmount) ? 0 : numAmount);
+
+    const numRate = Number(rate);
+    const validRate = isNaN(numRate) ? 0 : numRate;
+    const R = Math.max(0, validRate) / 12 / 100;
+
+    const numYears = Number(years);
+    const validYears = isNaN(numYears) ? 0 : numYears;
+
+    const numMonths = Number(months);
+    const validMonths = isNaN(numMonths) ? 0 : numMonths;
+
+    const totalMonths = validYears * 12 + validMonths;
 
     let emi = 0;
-    if (P > 0 && R > 0 && N > 0) {
-      const pow = Math.pow(1 + R, N);
+    if (P > 0 && R > 0 && totalMonths > 0) {
+      const pow = Math.pow(1 + R, totalMonths);
       emi = (P * R * pow) / (pow - 1);
-    } else if (P > 0 && N > 0) {
-      emi = P / N;
+    } else if (P > 0 && totalMonths > 0) {
+      emi = P / totalMonths;
     }
 
-    const totalAmount = emi * N;
+    const totalAmount = totalMonths > 0 ? emi * totalMonths : 0;
     const totalInterest = Math.max(0, totalAmount - P);
 
     const principalPct =
@@ -210,46 +90,34 @@ export default function EMICalculator() {
 
   // Reset Handler: Clears all fields to empty string to reveal placeholders
   const handleReset = () => {
-    setAmount("");
-    setRate("");
-    setYears("");
-    setMonths("");
+    reset({
+      amount: "",
+      rate: "",
+      years: "",
+      months: "",
+    });
   };
 
-  // Calculate Handler: Restores defaults if all fields were cleared
-  const handleCalculate = () => {
-    if (amount === "") setAmount(DEFAULT_EMI_VALUES.amount);
-    if (rate === "") setRate(DEFAULT_EMI_VALUES.rate);
-    if (years === "" && months === "") setYears(DEFAULT_EMI_VALUES.years);
+  // Calculate Handler: Triggers validation on form fields
+  const handleCalculate = async () => {
+    await trigger();
   };
 
   // Input Change Handlers
   const handleAmountChange = (e) => {
-    const raw = e.target.value.replace(/\D/g, "");
-    setAmount(raw === "" ? "" : Number(raw));
+    setValue("amount", e.target.value, { shouldValidate: true });
   };
 
   const handleRateChange = (e) => {
-    let val = e.target.value.replace(/[^0-9.]/g, "");
-    const parts = val.split(".");
-    if (parts.length > 2) {
-      val = parts[0] + "." + parts.slice(1).join("");
-    }
-    setRate(val);
+    setValue("rate", e.target.value, { shouldValidate: true });
   };
 
   const handleYearsChange = (e) => {
-    const raw = e.target.value.replace(/\D/g, "");
-    setYears(raw === "" ? "" : raw);
+    setValue("years", e.target.value, { shouldValidate: true });
   };
 
   const handleMonthsChange = (e) => {
-    const raw = e.target.value.replace(/\D/g, "");
-    if (raw === "") {
-      setMonths("");
-    } else {
-      setMonths(Math.min(11, Number(raw)).toString());
-    }
+    setValue("months", e.target.value, { shouldValidate: true });
   };
 
   return (
@@ -265,10 +133,13 @@ export default function EMICalculator() {
               subtitle="Enter the total loan amount"
             >
               <CalculatorTextField
+                type="number"
                 placeholder="Loan Amount"
                 value={amount}
                 onChange={handleAmountChange}
                 startAdornment="₹"
+                error={Boolean(errors.amount)}
+                helperText={errors.amount ? errors.amount.message : ""}
               />
             </CalculatorInputCard>
 
@@ -279,10 +150,13 @@ export default function EMICalculator() {
               subtitle="Enter annual interest rate"
             >
               <CalculatorTextField
+                type="number"
                 placeholder="Interest Rate"
                 value={rate}
                 onChange={handleRateChange}
                 endAdornment="%"
+                error={Boolean(errors.rate)}
+                helperText={errors.rate ? errors.rate.message : ""}
               />
             </CalculatorInputCard>
 
@@ -295,6 +169,7 @@ export default function EMICalculator() {
               <Grid container spacing={2}>
                 <Grid size={{ xs: 6 }}>
                   <CalculatorTextField
+                    type="number"
                     placeholder="Years"
                     value={years}
                     onChange={handleYearsChange}
@@ -303,10 +178,13 @@ export default function EMICalculator() {
                 </Grid>
                 <Grid size={{ xs: 6 }}>
                   <CalculatorTextField
+                    type="number"
                     placeholder="Months"
                     value={months}
                     onChange={handleMonthsChange}
                     endAdornment="MONTH/S"
+                    error={Boolean(errors.months)}
+                    helperText={errors.months ? errors.months.message : ""}
                   />
                 </Grid>
               </Grid>
@@ -509,7 +387,7 @@ export default function EMICalculator() {
                     color: colors.text.primary,
                   }}
                 >
-                  ₹ {formatINR(amount || 0)}
+                  ₹ {formatINR(amount)}
                 </Typography>
               </Box>
 
