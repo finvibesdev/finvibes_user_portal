@@ -181,38 +181,32 @@ export default function MainNavbar() {
         }}
       >
         <Box>
-          {/* Drawer Top Header: Logo + Close Button */}
+          {/* Drawer Top Header with Logo & Close Button */}
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
               alignItems: "center",
+              justifyContent: "space-between",
               mb: 2,
             }}
           >
-            <Box
-              component={NextLink}
-              href="/"
-              onClick={handleDrawerClose}
-              sx={{ display: "flex", alignItems: "center" }}
-            >
-              <Image
-                src={logoImg}
-                alt="Finvibes"
-                height={36}
-                width={Math.round(36 * (1374 / 317))}
-                style={{
-                  objectFit: "contain",
-                  width: "auto",
-                  maxHeight: "36px",
-                  display: "block",
-                }}
-              />
-            </Box>
+            <Image
+              src={logoImg}
+              alt="Finvibes"
+              height={36}
+              width={Math.round(36 * (1374 / 317))}
+              style={{
+                objectFit: "contain",
+                width: "auto",
+                height: "auto",
+                maxHeight: "36px",
+                display: "block",
+              }}
+            />
             <IconButton
               onClick={handleDrawerClose}
+              aria-label="Close navigation menu"
               sx={{ color: colors.text.primary }}
-              aria-label="Close menu"
             >
               <CloseIcon />
             </IconButton>
@@ -231,12 +225,17 @@ export default function MainNavbar() {
                 sx={{ borderRadius: "8px", py: 1 }}
               >
                 <ListItemText
-                  primary="Home"
-                  primaryTypographyProps={{
-                    fontWeight: typography.fontWeights.semibold,
-                    fontSize: typography.fontSizes.base,
-                    color: colors.text.primary,
-                  }}
+                  primary={
+                    <Typography
+                      sx={{
+                        fontWeight: typography.fontWeights.semibold,
+                        fontSize: typography.fontSizes.base,
+                        color: colors.text.primary,
+                      }}
+                    >
+                      Home
+                    </Typography>
+                  }
                 />
               </ListItemButton>
             </ListItem>
@@ -253,12 +252,17 @@ export default function MainNavbar() {
                 }}
               >
                 <ListItemText
-                  primary="Products"
-                  primaryTypographyProps={{
-                    fontWeight: typography.fontWeights.semibold,
-                    fontSize: typography.fontSizes.base,
-                    color: colors.text.primary,
-                  }}
+                  primary={
+                    <Typography
+                      sx={{
+                        fontWeight: typography.fontWeights.semibold,
+                        fontSize: typography.fontSizes.base,
+                        color: colors.text.primary,
+                      }}
+                    >
+                      Products
+                    </Typography>
+                  }
                 />
                 {productsCollapse ? (
                   <ExpandLess sx={{ color: "primary.main" }} />
@@ -285,13 +289,18 @@ export default function MainNavbar() {
                       }}
                     >
                       <ListItemText
-                        primary={item.label}
-                        primaryTypographyProps={{
-                          fontFamily: "inherit",
-                          fontSize: typography.fontSizes.sm,
-                          fontWeight: typography.fontWeights.medium,
-                          color: colors.text.primary,
-                        }}
+                        primary={
+                          <Typography
+                            sx={{
+                              fontFamily: "inherit",
+                              fontSize: typography.fontSizes.sm,
+                              fontWeight: typography.fontWeights.medium,
+                              color: colors.text.primary,
+                            }}
+                          >
+                            {item.label}
+                          </Typography>
+                        }
                       />
                     </ListItemButton>
                   ))}
@@ -311,12 +320,17 @@ export default function MainNavbar() {
                 }}
               >
                 <ListItemText
-                  primary="Smart Tools"
-                  primaryTypographyProps={{
-                    fontWeight: typography.fontWeights.semibold,
-                    fontSize: typography.fontSizes.base,
-                    color: colors.text.primary,
-                  }}
+                  primary={
+                    <Typography
+                      sx={{
+                        fontWeight: typography.fontWeights.semibold,
+                        fontSize: typography.fontSizes.base,
+                        color: colors.text.primary,
+                      }}
+                    >
+                      Smart Tools
+                    </Typography>
+                  }
                 />
                 {toolsCollapse ? (
                   <ExpandLess sx={{ color: "primary.main" }} />
@@ -343,13 +357,18 @@ export default function MainNavbar() {
                       }}
                     >
                       <ListItemText
-                        primary={item.label}
-                        primaryTypographyProps={{
-                          fontFamily: "inherit",
-                          fontSize: typography.fontSizes.sm,
-                          fontWeight: typography.fontWeights.medium,
-                          color: colors.text.primary,
-                        }}
+                        primary={
+                          <Typography
+                            sx={{
+                              fontFamily: "inherit",
+                              fontSize: typography.fontSizes.sm,
+                              fontWeight: typography.fontWeights.medium,
+                              color: colors.text.primary,
+                            }}
+                          >
+                            {item.label}
+                          </Typography>
+                        }
                       />
                     </ListItemButton>
                   ))}
@@ -367,12 +386,17 @@ export default function MainNavbar() {
                   sx={{ borderRadius: "8px", py: 1 }}
                 >
                   <ListItemText
-                    primary={link.label}
-                    primaryTypographyProps={{
-                      fontWeight: typography.fontWeights.semibold,
-                      fontSize: typography.fontSizes.base,
-                      color: colors.text.primary,
-                    }}
+                    primary={
+                      <Typography
+                        sx={{
+                          fontWeight: typography.fontWeights.semibold,
+                          fontSize: typography.fontSizes.base,
+                          color: colors.text.primary,
+                        }}
+                      >
+                        {link.label}
+                      </Typography>
+                    }
                   />
                 </ListItemButton>
               </ListItem>
